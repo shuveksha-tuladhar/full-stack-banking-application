@@ -57,4 +57,26 @@ function insertTransaction(email, amount) {
     })
 }
 
-module.exports = { create, findUser, getTransactions, insertTransaction };
+function getBalance(email) {
+    return new Promise((resolve, reject) => {
+        db.collection("transactions")
+            .find({ email: email })
+            .toArray(function (err, transactions) {
+            if (err) {
+                reject(err);
+            } else {
+                if (transactions.length > 0) {
+                    let balance = 0;
+                    transactions.forEach((tran) => {
+                        balance += tran.amount;
+                    });
+                    resolve({ totalBalance: balance });
+                } else {
+                    resolve({ totalBalance: 0 });
+                }
+            }
+            });
+        });
+}
+
+module.exports = { create, findUser, getTransactions, insertTransaction, getBalance };
