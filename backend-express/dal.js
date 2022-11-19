@@ -68,7 +68,7 @@ function getBalance(email) {
                 if (transactions.length > 0) {
                     let balance = 0;
                     transactions.forEach((tran) => {
-                        balance += tran.amount;
+                        balance += Number(tran.amount);
                     });
                     resolve({ totalBalance: balance });
                 } else {

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const MongoClient = require('mongodb').MongoClient;
-
+const cors = require('cors');
 const app = express();
 
 const accessTokenSecret = 'somerandomaccesstoken';
@@ -10,6 +10,13 @@ const refreshTokenSecret = 'somerandomstringforrefreshtoken';
 
 let refreshTokens = [];
 
+const origins = ["http://localhost:3000"];
+
+const corsOptions =  {
+    origin: origins
+}
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 const url = 'mongodb://localhost:27017';
@@ -39,7 +46,12 @@ app.post('/login', async (request, response) => {
 
         response.json({
             accessToken,
-            refreshToken
+            refreshToken,
+            user: {
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
         });
     } else {
         response.send('Username or password incorrect');

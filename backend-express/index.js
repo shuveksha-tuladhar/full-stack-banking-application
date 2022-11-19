@@ -6,14 +6,19 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
 const accessTokenSecret = 'somerandomaccesstoken';
+const origins = ["http://localhost:3000"];
 
-app.use(cors());
+const corsOptions =  {
+    origin: origins
+}
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 const authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    console.log(`Headers: ${JSON.stringify(req.headers)}`);
-    console.log(`Body: ${JSON.stringify(req.body)}`);
+    // console.log(`Headers: ${JSON.stringify(req.headers)}`);
+    // console.log(`Body: ${JSON.stringify(req.body)}`);
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
@@ -23,7 +28,7 @@ const authenticateJWT = (req, res, next) => {
             }
 
             req.user = user;
-            console.log('User:', user);
+            // console.log('User:', user);
             next();
         });
     } else {
@@ -93,9 +98,12 @@ app.post('/deposit', authenticateJWT, function(req, res) {
 app.post('/withdraw', authenticateJWT, function(req, res) {
     const {amount} = req.body;
     const email = req.user.username;
+    console.log('Request body:', req.body, 'Amount:', amount, 'Email:', email);
     if (email){
         dal.getBalance(email).then(balance => {
-            const totalBalanceAfterWithdraw = balance.totalBalance - amount;
+            const totalBalanceAfterWithdraw = balance.totalBalance - Number(amount);
+
+            console.log('Total Balance after withdraw', totalBalanceAfterWithdraw);
             if (totalBalanceAfterWithdraw >= 0) {
                 dal.insertTransaction(email, amount * -1).
                 then((result) => {

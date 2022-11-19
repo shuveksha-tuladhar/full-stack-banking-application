@@ -2,50 +2,75 @@ import React from "react";
 import LoginImage from "../../images/bank.svg";
 import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
+import { useFormik } from "formik";
+import axios from "axios";
+
+const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:4000";
 
 export default function CreateAccount() {
-
   const [showSuccessMsg, setShowSuccessMsg] = React.useState(false);
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
 
-  const [validationMsg, setValidationMsg] = React.useState({
-    name: false,
-    email: false,
-    password: false,
-    passwordLength: false,
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    onSubmit: (values) => {
+      // Create an account
+      createAccount(values);
+    },
+    validate: (values) => {
+      let errors = {};
+      if (!values.name) errors.name = "Name is required";
+      if (!values.email) {
+        errors.email = "Email is required";
+      } else {
+        if (
+          !values.email.match(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          )
+        ) {
+          errors.email = "Email address should be valid";
+        }
+      }
+      if (!values.password) {
+        errors.password = "Password is required";
+      } else {
+        if (values.password.length < 8)
+          errors.password = "Password must be at least 8 characters";
+      }
+
+      if (!values.confirmPassword) {
+        errors.confirmPassword = "Re-type password";
+      } else {
+        if (values.confirmPassword != values.password)
+          errors.confirmPassword = "Password mismatch";
+      }
+      return errors;
+    },
   });
 
-  function clearForm() {
-    setName("");
-    setEmail("");
-    setPassword("");
-    setShowSuccessMsg(false);
+  function createAccount({ name, email, password }) {
+    axios
+      .post(
+        API_BACKEND_URL + "/create-account",
+        JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+        })
+      )
+      .then((resp) => {
+        const data = resp.data;
+        if (data === "User already in exists") {
+          console.log(data);
+        } else {
+          setShowSuccessMsg(true);
+        }
+      });
   }
-
-   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (email && password && name && password.length >=8) {
-      setValidationMsg({ name: false, email: false, password: false, passwordLength: false });
-      console.log("complete");
-      setShowSuccessMsg(true);
-    } else {
-      setShowSuccessMsg(false);
-      if (!name && !email && !password) {
-        setValidationMsg({ name: true, email: true, password: true, passwordLength: false });
-      } else if (!name) {
-        setValidationMsg({ name: true, email: false, password: false, passwordLength: false });
-      } else if (!email) {
-        setValidationMsg({ name: false, email: true, password: false, passwordLength: false });
-      } else if (!password) {
-        setValidationMsg({ name: false, email: false, password: true, passwordLength: false });
-      } else if (password && password.length < 8) {
-        setValidationMsg({ name: false, email: false, password: false, passwordLength: true });
-      }
-    }
-  };
   return (
     <>
       <Navbar />
@@ -61,7 +86,7 @@ export default function CreateAccount() {
               </span>
             )}
             {!showSuccessMsg ? (
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={formik.handleSubmit}>
                 <>
                   Name
                   <br />
@@ -70,12 +95,12 @@ export default function CreateAccount() {
                     className="form-control"
                     id="name"
                     placeholder="Enter name"
-                    value={name}
-                    onChange={(e) => setName(e.currentTarget.value)}
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
                   />
-                  {validationMsg.name && (
+                  {formik.errors.name && (
                     <small className="text-danger mb-2">
-                      Name is required.
+                      {formik.errors.name}
                     </small>
                   )}
                   <br />
@@ -86,12 +111,12 @@ export default function CreateAccount() {
                     className="form-control"
                     id="email"
                     placeholder="Enter email"
-                    value={email}
-                    onChange={(e) => setEmail(e.currentTarget.value)}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
                   />
-                  {validationMsg.email && (
+                  {formik.errors.email && (
                     <small className="text-danger mb-2">
-                      Email is required.
+                      {formik.errors.email}
                     </small>
                   )}
                   <br />
@@ -102,17 +127,12 @@ export default function CreateAccount() {
                     className="form-control"
                     id="password"
                     placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.currentTarget.value)}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
                   />
-                  {validationMsg.password && (
+                  {formik.errors.password && (
                     <small className="text-danger mb-2">
-                      Password is required.
-                    </small>
-                  )}
-                  {validationMsg.passwordLength && (
-                    <small className="text-danger mb-2">
-                      Password must be at least 8 characters long.
+                      {formik.errors.password}
                     </small>
                   )}
                   <br />
@@ -121,17 +141,18 @@ export default function CreateAccount() {
                   <input
                     type="password"
                     className="form-control"
-                    id="confirm-password"
+                    id="confirmPassword"
                     placeholder="Confirm password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+                    value={formik.values.confirmPassword}
+                    onChange={formik.handleChange}
                   />
-                  <br/>
-                  <button
-                    type="submit"
-                    disabled={!name && !password && !email}
-                    className="btn btn-primary w-100"
-                  >
+                   {formik.errors.confirmPassword && (
+                    <small className="text-danger mb-2">
+                      {formik.errors.confirmPassword}
+                    </small>
+                  )}
+                  <br />
+                  <button type="submit" className="btn btn-primary w-100">
                     Create Account
                   </button>
                 </>
@@ -141,7 +162,7 @@ export default function CreateAccount() {
                 <button
                   type="submit"
                   className="btn btn-light mt-4"
-                  onClick={clearForm}
+                  onClick={formik.handleReset && setShowSuccessMsg(false)}
                 >
                   Add another account
                 </button>

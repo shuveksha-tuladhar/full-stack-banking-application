@@ -5,23 +5,32 @@ import Deposit from "./features/Deposit/Deposit";
 import WithDraw from "./features/Withdraw/Withdraw";
 import CreateAccount from "./features/CreateAccount/CreateAccount.jsx";
 import Login from "./features/Login/Login";
-// import Main from "./component/Main/Main";
-// import AllData from "./component/AllData";
+import AboutUs from "./features/AboutUs/AboutUs";
+import AllData from "./features/AllData/AllData";
 
 import "./styles/base.scss";
 import "bootstrap/dist/css/bootstrap.css";
 
+import UserContext from "./Context/Context";
+
+const userContextValue = {
+  name: '', email: '', accessToken: '', refreshToken: '', role: '',
+};
 
 function App() {
+  const [val, setVal] = React.useState(userContextValue);
+
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="create-account" element={<CreateAccount />} />
-      {/* <Route path="home" element={<Main />} /> */}
-      <Route path="deposit" element={<Deposit />} />
-      <Route path="withdraw" element={<WithDraw />} />
-      {/* <Route path="alldata" element={<AllData />} />  */}
-    </Routes>
+    <UserContext.Provider value={[val, setVal]}>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="create-account" element={<CreateAccount />} />
+        <Route path="aboutus" element={<AboutUs />} />
+        <Route path="deposit" element={<Deposit />} />
+        <Route path="withdraw" element={<WithDraw />} />
+        <Route path="alldata" element={<AllData />} /> 
+      </Routes>
+    </UserContext.Provider>
   );
 }
 

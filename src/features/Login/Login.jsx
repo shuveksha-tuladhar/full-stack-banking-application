@@ -1,13 +1,81 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useContext, useState} from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import axios from "axios";
 
 import BankImage from "../../images/bank.svg";
 import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
+import { UserContext } from "../../Context/Context";
+
+const API_AUTH_URL = process.env.API_AUTH_URL || "http://localhost:3001";
 
 export default function Login() {
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
+    const navigate = useNavigate();
+
+    const [validationMsg, setValidationMsg] = useState(false);
+    const [ctxValue, setCtxValue] = useContext(UserContext);
+    const [redirection, setRedirection] = useState(false);
+
+    useEffect(() => {
+      if (!!ctxValue.username && !!ctxValue.name && !!ctxValue.role && !!ctxValue.accessToken && !!ctxValue.refreshToken)
+       setRedirection(true);
+      else
+        setRedirection(false);
+    }, [JSON.stringify(ctxValue)])
+
+    const formik = useFormik({
+      initialValues: {
+        email: '',
+        password: '',
+      },
+      onSubmit: values => {
+        loginUser(values);
+      },
+      validate: values => {
+        let errors = {};
+        if (!values.email) {
+          errors.email = "Email is required";
+        } else {
+          if (
+            !values.email.match(
+              /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            )
+          ) {
+            errors.email = "Username should be an email";
+          }
+        }
+        if (!values.password) errors.password = "Password is required";
+        return errors;
+      }
+    })
+
+    if (ctxValue.username && ctxValue.name && ctxValue.role && ctxValue.accessToken && ctxValue.refreshToken) setRedirection(true);
+
+    const loginUser = ({email, password}) => { 
+      // Set the logged in to true for a user
+      axios.post(API_AUTH_URL + "/login", {
+          username: email,
+          password: password,
+      })
+      .then(resp => {
+        const data = resp.data;
+        console.log(data);
+        if(data === "Username or password incorrect") {
+          setValidationMsg(true);
+        } 
+        setCtxValue({
+          username: data.user.email,
+          name: data.user.name,
+          role: data.user.role,
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken
+        });
+
+        navigate("/alldata");
+
+      });
+  }
   
     return (
       <>
@@ -19,11 +87,12 @@ export default function Login() {
           </div>
           <div className="col-lg-6 mx-auto">
             <Card title="Sign on to manage your account">
-             
-                <small className="text-danger mb-3">
-                  Email/Password is incorrect.
-                </small>
-              <form onSubmit={() => console.log('Submit here')}>
+             {validationMsg && (
+              <small className="text-danger mb-3">
+                Email/Password is incorrect.
+              </small>
+             )}
+              <form onSubmit={formik.handleSubmit}>
                 <>
                   Email
                   <br />
@@ -32,12 +101,12 @@ export default function Login() {
                     className="form-control"
                     id="email"
                     placeholder="Enter email"
-                    value={email}
-                    onChange={(e) => setEmail(e.currentTarget.value)}
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
                   />
-                  {/* {validationMsg.email && ( */}
-                    <small className="text-danger mb-3">Email is required.</small>
-                  {/* )} */}
+                  {formik.errors.email && (
+                    <small className="text-danger mb-3">{formik.errors.email}</small>
+                  )}
                   <br />
                   Password
                   <br />
@@ -46,14 +115,12 @@ export default function Login() {
                     className="form-control"
                     id="password"
                     placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.currentTarget.value)}
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
                   />
-                  {/* {validationMsg.password && ( */}
-                    <small className="text-danger mb-3">
-                      Password is required.
-                    </small>
-                  {/* )} */}
+                  {formik.errors.password && (
+                    <small className="text-danger mb-3">{formik.errors.password}</small>
+                  )}
                   <br />
                   <button type="submit" className="btn btn-primary w-100">
                     Login
@@ -66,11 +133,10 @@ export default function Login() {
                   <Link to="/create-account" className="d-block">
                     Create an account
                   </Link>
-                  <p>Or using [google] [facebook]</p>
                 </h6>
               </>
             </Card>
-            {/* {redirectToMain && <Navigate to="home" />} */}
+            {redirection && <Navigate to="/alldata" />}
           </div>
         </div>
       </>
