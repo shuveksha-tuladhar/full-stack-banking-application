@@ -8,8 +8,8 @@ import Login from "./features/Login/Login";
 import AboutUs from "./features/AboutUs/AboutUs";
 import AllData from "./features/AllData/AllData";
 
-import "./styles/base.scss";
-import "bootstrap/dist/css/bootstrap.css";
+import "./styles/main.scss";
+
 
 import UserContext from "./Context/Context";
 

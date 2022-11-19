@@ -60,7 +60,12 @@ export default function CreateAccount() {
           name: name,
           email: email,
           password: password,
-        })
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       )
       .then((resp) => {
         const data = resp.data;

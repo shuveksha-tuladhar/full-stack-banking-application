@@ -56,14 +56,19 @@ export default function AllData() {
   return (
     <>
       <Navbar />
-      <div className="row g-0 h-100">
-        <div className="col-lg-4">
+      <div className="row g-0 h-100 ">
+        <div className="col-lg-4 mt-5">
           <AccountDetails name={ctxValue.name} balance={balance} />
         </div>
 
         <div className="col-lg-8">
-          <Card title="Transactions">
-            <Table striped>
+          {/* <Card title="Transactions" > */}
+          <h5 className="text-center text-secondary my-4">Transactions</h5>
+        <div className="px-3">
+
+            <div className="table-responsive">
+
+            <Table className="table-stripe">
               <thead>
                 <tr>
                   <th>#</th>
@@ -91,7 +96,9 @@ export default function AllData() {
                 ))}
               </tbody>
             </Table>
-          </Card>
+            </div>
+        </div>
+          {/* </Card> */}
         </div>
       </div>
     </>

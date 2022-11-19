@@ -43,7 +43,7 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
         <Link className="navbar-brand d-flex align-items-center" to="/aboutus">
           <img src={LoginImage} alt="Bank" height={40} />
-          <h6 className="ml-3">Smart Bank</h6>{" "}
+          <h6 className="ms-3">Smart Bank</h6>{" "}
         </Link>
         <button
           className="navbar-toggler"
