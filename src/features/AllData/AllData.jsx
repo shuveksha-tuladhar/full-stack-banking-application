@@ -83,7 +83,7 @@ export default function AllData() {
                 {transactions.map((transaction, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td></td>
+                    <td>{transaction.transactionNumber}</td>
                     <td>
                       {transaction.dateCreated
                         ? transaction.dateCreated.split("T")[0]

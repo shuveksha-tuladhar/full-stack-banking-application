@@ -14,7 +14,8 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function (err, client) {
 function create(name, email, password) {
   return new Promise((resolve, reject) => {
     const collection = db.collection("users");
-    const doc = { name, email, password, role: "customer" };
+    const newAccountNumber = Math.floor(100000000 + Math.random() * 900000000);
+    const doc = { name, email, password, role: "customer", accountNumber: newAccountNumber };
     collection.insertOne(doc, { w: 1 }, function (err, result) {
       err ? reject(err) : resolve(doc);
     });
@@ -49,7 +50,9 @@ function getTransactions(email) {
 // insert transaction
 function insertTransaction(email, amount) {
     return new Promise((resolve, reject) => {
-        const doc = {email, amount, dateCreated: new Date()}
+        const today =  new Date();
+        const newTransaction = `T-${today.toISOString().split('T')[0]}-${Math.floor(10000 + Math.random() * 90000)}`; 
+        const doc = {email, amount, transactionNumber: newTransaction,  dateCreated: today}
         db.collection('transactions')
             .insertOne(doc, {w: 1}, function(err, result) {
                 err ? reject(err) : resolve(doc)

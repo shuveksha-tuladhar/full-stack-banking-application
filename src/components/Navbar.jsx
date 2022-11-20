@@ -153,7 +153,6 @@ export default function Navbar() {
                 <Dropdown.Menu>
                   <Dropdown.Item href="#/profile">Profile</Dropdown.Item>
                   <Dropdown.Item
-                    href="#/logout"
                     onClick={logOut}
                   >
                     Log Out

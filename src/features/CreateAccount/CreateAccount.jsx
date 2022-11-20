@@ -167,7 +167,10 @@ export default function CreateAccount() {
                 <button
                   type="submit"
                   className="btn btn-light mt-4"
-                  onClick={formik.handleReset && setShowSuccessMsg(false)}
+                  onClick={() => {
+                    formik.handleReset();
+                    setShowSuccessMsg(false);
+                  }}
                 >
                   Add another account
                 </button>

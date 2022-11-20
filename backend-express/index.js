@@ -64,7 +64,6 @@ app.get('/transactions', authenticateJWT, function(req, res) {
 
     dal.getTransactions(email).
         then((transactions) => {
-            console.log('Email:', email, 'Transactions:', transactions)
             res.send(transactions);
         });
 });
@@ -98,7 +97,6 @@ app.post('/deposit', authenticateJWT, function(req, res) {
 app.post('/withdraw', authenticateJWT, function(req, res) {
     const {amount} = req.body;
     const email = req.user.username;
-    console.log('Request body:', req.body, 'Amount:', amount, 'Email:', email);
     if (email){
         dal.getBalance(email).then(balance => {
             const totalBalanceAfterWithdraw = balance.totalBalance - Number(amount);
