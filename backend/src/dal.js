@@ -1,13 +1,15 @@
+require("dotenv").config();
+
 const MongoClient = require("mongodb").MongoClient;
-const url = process.env.MONGO_URL  || "mongodb://localhost:27017";
+const MONGO_URL = process.env.MONGO_URL  || "mongodb://localhost:27017";
+const MONGO_DB_NAME = process.env.MONGO_DB_NAME || "smart-bank";
+
 let db = null;
-
 // connect to mongo
-MongoClient.connect(url, { useUnifiedTopology: true }, function (err, client) {
-  console.log("Connected successfully to db server");
-
-  // connect to myproject database
-  db = client.db("smart-bank");
+MongoClient.connect(MONGO_URL, { useUnifiedTopology: true }, function (err, client) {
+    // connect to myproject database
+    db = client.db(MONGO_DB_NAME);
+    console.log("Connected successfully to db server");
 });
 
 // create user account with role customer using the collection.insertOne function
@@ -28,6 +30,18 @@ function findUser(email) {
         db
             .collection('users')
             .find({ email: email })
+            .toArray(function (err, docs) {
+                err ? reject(err) : resolve(docs);
+            });
+    })
+}
+
+// Check username and password for login
+function findUser(email, password) {
+    return new Promise((resolve, reject) => {
+        db
+            .collection('users')
+            .find({ email: email, password: password })
             .toArray(function (err, docs) {
                 err ? reject(err) : resolve(docs);
             });

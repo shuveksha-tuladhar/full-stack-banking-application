@@ -7,7 +7,7 @@ import Navbar from "../../components/Navbar";
 import Card from "../../components/Card";
 import AccountDetails from "../../components/AccountDetails";
 
-const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:4000";
+const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:8080/api";
 
 export default function AllData() {
   const [ctxValue, setCtxValue] = React.useContext(UserContext);

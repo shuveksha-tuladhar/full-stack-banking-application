@@ -8,11 +8,11 @@ import UserContext from "../../Context/Context";
 
 import Navbar from "../../components/Navbar";
 
-const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:4000";
+const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:8080/api";
 
 export default function Withdraw() {
   const [showToast, setShowToast] = React.useState(false);
-  const [ctxValue, setCtxValue] = React.useContext(UserContext);
+  const [ctxValue,] = React.useContext(UserContext);
   const [balance, setBalance] = React.useState(0);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export default function Withdraw() {
       .then((resp) => {
         console.log(resp);
         const data = resp.data;
-        if (data == "Balance not enough to withdraw amount") {
+        if (data === "Balance not enough to withdraw amount") {
           console.log(formik.errors);
         } else {
           console.log(data);

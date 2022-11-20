@@ -1,0 +1,40 @@
+version: '1.0'
+
+services:
+  frontend: 
+    container_name: badbankapp-frontend
+    restart: always
+    build: 
+      context: /frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    depends_on:
+      - api
+  
+  api:
+    container_name: badbankapp-api
+    restart: always
+    build:
+      context: backend
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017
+    volumes:
+      - ./backend:/api
+      - /backend/node_modules
+    depends_on:
+      - mongodb
+    
+  mongodb:
+    image: mongo
+    restart: always
+    container_name: badbankapp-mongodb
+    volumes:
+      - ./database:/data.db
+    ports:
+      - "27017:27017"
+    

@@ -8,7 +8,7 @@ import UserContext from "../../Context/Context";
 
 import Navbar from "../../components/Navbar";
 
-const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:4000";
+const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:8080/api";
 
 export default function Deposit() {
   const [showToast, setShowToast] = React.useState(false);

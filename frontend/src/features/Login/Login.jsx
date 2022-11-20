@@ -8,7 +8,7 @@ import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
 import { UserContext } from "../../Context/Context";
 
-const API_AUTH_URL = process.env.API_AUTH_URL || "http://localhost:3001";
+const API_AUTH_URL = process.env.API_AUTH_URL || "http://localhost:8080";
 
 export default function Login() {
     const navigate = useNavigate();

@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar";
 import { useFormik } from "formik";
 import axios from "axios";
 
-const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:4000";
+const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:8080/api";
 
 export default function CreateAccount() {
   const [showSuccessMsg, setShowSuccessMsg] = React.useState(false);
