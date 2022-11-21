@@ -2,18 +2,15 @@ import React, { useEffect } from "react";
 import axios from "axios";
 
 import { Table } from "react-bootstrap";
-import UserContext from "../../Context/Context";
+import { UserContext, API_BACKEND_URL } from "../../Context/Context";
 import Navbar from "../../components/Navbar";
 import Card from "../../components/Card";
 import AccountDetails from "../../components/AccountDetails";
-
-const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:8080/api";
 
 export default function AllData() {
   const [ctxValue, setCtxValue] = React.useContext(UserContext);
   const [transactions, setTransactions] = React.useState([]);
   const [balance, setBalance] = React.useState(0);
-
 
   useEffect(() => {
     getTransactions();
@@ -22,7 +19,7 @@ export default function AllData() {
 
   function getBalance() {
     axios
-      .get(API_BACKEND_URL + "/balance", {
+      .get(API_BACKEND_URL + "/api/balance", {
         headers: {
           Authorization: "Bearer " + ctxValue.accessToken,
         },
@@ -36,7 +33,7 @@ export default function AllData() {
 
   function getTransactions() {
     axios
-      .get(API_BACKEND_URL + "/transactions", {
+      .get(API_BACKEND_URL + "/api/transactions", {
         headers: {
           Authorization: "Bearer " + ctxValue.accessToken,
         },

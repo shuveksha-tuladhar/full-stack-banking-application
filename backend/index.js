@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var app     = express();
 var cors    = require('cors');
@@ -5,9 +6,9 @@ var dal     = require('./src/dal.js');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
-require('dotenv').config();
 console.log('NODE env:', process.env.NODE_ENV);
 console.log('Mongo URL:', process.env.MONGO_URL);
+console.log('Origin URL:', process.env.ORIGIN_URL);
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || 'somerandomaccesstoken';
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || 'somerandomstringforrefreshtoken';

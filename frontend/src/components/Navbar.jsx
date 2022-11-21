@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import LoginImage from "../images/logo.svg";
-import { UserContext } from "../Context/Context";
+import { UserContext, API_BACKEND_URL } from "../Context/Context";
 import axios from "axios";
-
-const API_AUTH_URL = process.env.API_AUTH_URL || "http://localhost:3001";
 
 export default function Navbar() {
   const [isLoggedIn, setisLoggedIn] = React.useState(false);
@@ -27,7 +25,7 @@ export default function Navbar() {
   function logOut() {
     axios
       .post(
-        API_AUTH_URL + "/logout",
+        API_BACKEND_URL + "/logout",
         JSON.stringify({ token: ctx.accessToken })
       )
       .then((resp) => {

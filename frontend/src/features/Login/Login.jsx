@@ -6,9 +6,7 @@ import axios from "axios";
 import BankImage from "../../images/bank.svg";
 import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
-import { UserContext } from "../../Context/Context";
-
-const API_AUTH_URL = process.env.API_AUTH_URL || "http://localhost:8080";
+import { UserContext, API_BACKEND_URL } from "../../Context/Context";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -54,7 +52,7 @@ export default function Login() {
 
     const loginUser = ({email, password}) => { 
       // Set the logged in to true for a user
-      axios.post(API_AUTH_URL + "/login", {
+      axios.post(API_BACKEND_URL + "/login", {
           username: email,
           password: password,
       })

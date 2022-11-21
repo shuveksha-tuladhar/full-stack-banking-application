@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar";
 import { useFormik } from "formik";
 import axios from "axios";
 
-const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:8080/api";
+import { API_BACKEND_URL } from "../../Context/Context";
 
 export default function CreateAccount() {
   const [showSuccessMsg, setShowSuccessMsg] = React.useState(false);
@@ -55,7 +55,7 @@ export default function CreateAccount() {
   function createAccount({ name, email, password }) {
     axios
       .post(
-        API_BACKEND_URL + "/create-account",
+        API_BACKEND_URL + "/api/create-account",
         JSON.stringify({
           name: name,
           email: email,

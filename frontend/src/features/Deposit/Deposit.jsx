@@ -4,11 +4,9 @@ import { useFormik } from "formik";
 import AccountDetails from "../../components/AccountDetails";
 import Card from "../../components/Card";
 import { Toast } from "react-bootstrap";
-import UserContext from "../../Context/Context";
+import { UserContext, API_BACKEND_URL } from "../../Context/Context";
 
 import Navbar from "../../components/Navbar";
-
-const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:8080/api";
 
 export default function Deposit() {
   const [showToast, setShowToast] = React.useState(false);
@@ -41,10 +39,10 @@ export default function Deposit() {
       return errors;
     },
   });
-  
+
   function getBalance() {
     axios
-      .get(API_BACKEND_URL + "/balance", {
+      .get(API_BACKEND_URL + "/api/balance", {
         headers: {
           Authorization: "Bearer " + ctxValue.accessToken,
         },
@@ -59,7 +57,7 @@ export default function Deposit() {
   const depositAmount = ({ amount }) => {
     axios
       .post(
-        API_BACKEND_URL + "/deposit",
+        API_BACKEND_URL + "/api/deposit",
         JSON.stringify({
           amount: Number(amount),
         }),

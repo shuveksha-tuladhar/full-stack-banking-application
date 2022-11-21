@@ -4,15 +4,13 @@ import { useFormik } from "formik";
 import AccountDetails from "../../components/AccountDetails";
 import Card from "../../components/Card";
 import { Toast } from "react-bootstrap";
-import UserContext from "../../Context/Context";
+import { UserContext, API_BACKEND_URL } from "../../Context/Context";
 
 import Navbar from "../../components/Navbar";
 
-const API_BACKEND_URL = process.env.BACKEND_EXPRESS || "http://localhost:8080/api";
-
 export default function Withdraw() {
   const [showToast, setShowToast] = React.useState(false);
-  const [ctxValue,] = React.useContext(UserContext);
+  const [ctxValue] = React.useContext(UserContext);
   const [balance, setBalance] = React.useState(0);
 
   useEffect(() => {
@@ -49,7 +47,7 @@ export default function Withdraw() {
 
   function getBalance() {
     axios
-      .get(API_BACKEND_URL + "/balance", {
+      .get(API_BACKEND_URL + "/api/balance", {
         headers: {
           Authorization: "Bearer " + ctxValue.accessToken,
         },
@@ -64,7 +62,7 @@ export default function Withdraw() {
   const withdrawAmount = ({ amount }) => {
     axios
       .post(
-        API_BACKEND_URL + "/withdraw",
+        API_BACKEND_URL + "/api/withdraw",
         JSON.stringify({
           amount: Number(amount),
         }),
