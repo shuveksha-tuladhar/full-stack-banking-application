@@ -7,6 +7,7 @@ import CreateAccount from "./features/CreateAccount/CreateAccount.jsx";
 import Login from "./features/Login/Login";
 import AboutUs from "./features/AboutUs/AboutUs";
 import AllData from "./features/AllData/AllData";
+import Profile from "./features/Profile/Profile";
 
 import "./styles/main.scss";
 
@@ -14,7 +15,7 @@ import "./styles/main.scss";
 import UserContext from "./Context/Context";
 
 const userContextValue = {
-  name: '', email: '', accessToken: '', refreshToken: '', role: '',
+  name: '', email: '', accessToken: '', refreshToken: '', role: '', accountNumber: '',
 };
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="deposit" element={<Deposit />} />
         <Route path="withdraw" element={<WithDraw />} />
         <Route path="alldata" element={<AllData />} /> 
+        <Route path="profile" element={<Profile />} /> 
       </Routes>
     </UserContext.Provider>
   );

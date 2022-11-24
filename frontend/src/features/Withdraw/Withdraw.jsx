@@ -92,52 +92,64 @@ export default function Withdraw() {
     <>
       <Navbar />
       <div className="row g-0 h-100">
-        <div className="col-lg-4">
-          <AccountDetails balance={balance} name={ctxValue.name} />
-        </div>
-        <div className="col-lg-8">
-          <Card title="Withdraw">
-            <Toast
-              bg="success"
-              onClose={() => setShowToast(false)}
-              show={showToast}
-              delay={3000}
-              autohide
-            >
-              <Toast.Body className="text-white">
-                Withdrawn successfully
-              </Toast.Body>
-            </Toast>
-            <form onSubmit={formik.handleSubmit}>
-              <>
-                <br />
-                Withdraw Amount
-                <br />
-                <input
-                  className="form-control"
-                  type="number"
-                  id="withdraw-amount"
-                  placeholder="Withdraw Amount"
-                  defaultValue={formik.values.amount}
-                  onChange={(e) =>
-                    formik.setFieldValue("amount", e.target.value)
-                  }
-                />
-                {formik.errors.amount && (
-                  <span className="text-danger">{formik.errors.amount}</span>
-                )}
-                <br />
-                <button type="submit" className="btn btn-primary">
-                  Withdraw
-                </button>
-              </>
-            </form>
-          </Card>
-        </div>
+        {ctxValue.username && ctxValue.accessToken && (
+          <>
+            <div className="col-lg-4">
+              <AccountDetails
+                name={ctxValue.name}
+                balance={balance}
+                accountNumber={ctxValue.accountNumber}
+              />
+            </div>
+            <div className="col-lg-8">
+              <Card title="Withdraw">
+                <Toast
+                  bg="success"
+                  onClose={() => setShowToast(false)}
+                  show={showToast}
+                  delay={3000}
+                  autohide
+                >
+                  <Toast.Body className="text-white">
+                    Withdrawn successfully
+                  </Toast.Body>
+                </Toast>
+                <form onSubmit={formik.handleSubmit}>
+                  <>
+                    <br />
+                    Withdraw Amount
+                    <br />
+                    <input
+                      className="form-control"
+                      type="number"
+                      id="withdraw-amount"
+                      placeholder="Withdraw Amount"
+                      defaultValue={formik.values.amount}
+                      onChange={(e) =>
+                        formik.setFieldValue("amount", e.target.value)
+                      }
+                    />
+                    {formik.errors.amount && (
+                      <span className="text-danger">
+                        {formik.errors.amount}
+                      </span>
+                    )}
+                    <br />
+                    <button type="submit" className="btn btn-primary">
+                      Withdraw
+                    </button>
+                  </>
+                </form>
+              </Card>
+            </div>
+          </>
+        )}
 
-        {/* <span className="text-secondary">
-            User must be logged in to withdraw amount.
-          </span> */}
+        {!(ctxValue.username && ctxValue.accessToken) && (
+          <span className="text-secondary">
+            User must be logged in to withdraw the amount.
+          </span>
+        )}
       </div>
     </>
   );

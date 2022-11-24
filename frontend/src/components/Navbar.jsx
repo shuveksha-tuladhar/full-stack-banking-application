@@ -22,6 +22,10 @@ export default function Navbar() {
     }
   }, [JSON.stringify(ctx)]);
 
+  function profileClick() {
+    navigate("/profile");
+  }
+
   function logOut() {
     axios
       .post(
@@ -149,7 +153,7 @@ export default function Navbar() {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#/profile">Profile</Dropdown.Item>
+                  <Dropdown.Item onClick={profileClick}>Profile</Dropdown.Item>
                   <Dropdown.Item
                     onClick={logOut}
                   >

@@ -50,30 +50,36 @@ export default function Login() {
 
     if (ctxValue.username && ctxValue.name && ctxValue.role && ctxValue.accessToken && ctxValue.refreshToken) setRedirection(true);
 
-    const loginUser = ({email, password}) => { 
+    const loginUser = async ({email, password}) => { 
       // Set the logged in to true for a user
-      axios.post(API_BACKEND_URL + "/login", {
+      const {data} = await axios.post(API_BACKEND_URL + "/login", {
           username: email,
           password: password,
-      })
-      .then(resp => {
-        const data = resp.data;
-        console.log(data);
-        if(data === "Username or password incorrect") {
+      });
+    
+      if(data === "Username or password incorrect") {
           setValidationMsg(true);
-        } 
+      } else {
+        const accountDetail = await axios.get(API_BACKEND_URL + '/api/account-detail', {
+          headers: {
+            'Authorization': 'Bearer ' + data.accessToken
+          }
+        });
+
+        console.log('Account Detail:', accountDetail);
+
         setCtxValue({
           username: data.user.email,
           name: data.user.name,
           role: data.user.role,
           accessToken: data.accessToken,
-          refreshToken: data.refreshToken
+          refreshToken: data.refreshToken,
+          accountNumber: accountDetail.data.accountNumber,
         });
 
         navigate("/alldata");
-
-      });
-  }
+      }
+    }
   
     return (
       <>
