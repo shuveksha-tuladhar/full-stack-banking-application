@@ -52,6 +52,7 @@ small {
     position: sticky;
     top:0;
     width: 100%;
+    z-index: 99;
   &-nav {
     .nav-link.active {
       background-color: $purple-100;
