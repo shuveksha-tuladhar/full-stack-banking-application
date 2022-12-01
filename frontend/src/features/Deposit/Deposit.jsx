@@ -95,7 +95,7 @@ export default function Deposit() {
               />
             </div>
             <div className="col-lg-8">
-              <Card title="Withdraw">
+              <Card title="Deposit">
                 <Toast
                   bg="success"
                   onClose={() => setShowToast(false)}
