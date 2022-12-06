@@ -3,9 +3,9 @@
 This project was developed using React JS, Express, Node JS and Mongo DB. This is a banking application where you can deposit, withdraw and view transaction history of a logged in user. This project is a part of capstone project for course "Professional Certificate in Coding: Full Stack Development with MERN" at MIT. 
 
 ### Objective
-Build, test, and deploy a React application
-Design and build UI components using React
-Deploy a React application using Digital Ocean. 
+- Build, test, and deploy a React application
+- Design and build UI components using React
+- Deploy a React application using Digital Ocean. 
 
 ### How to run this app
 - Clone this repository
