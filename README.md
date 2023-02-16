@@ -1,11 +1,8 @@
-# Banking Application using MERN Stack
+# Smart Bank
 
-This project was developed using React JS, Express, Node JS and Mongo DB. This is a banking application where you can deposit, withdraw and view transaction history of a logged in user. This project is a part of capstone project for course "Professional Certificate in Coding: Full Stack Development with MERN" at MIT. 
+Smart Bank is a full-stack application which is similar to financial software that is used in professional banking institutions. This banking application includes a frontend user interface, and backend services with a database. The frontend of the application is built using React framework, backend server is implemented with Express.js and a Mongo database to store transaction and account information. This application also includes Docker implementation which allows it to make it easy to deploy and run on any platform.
 
-### Objective
-- Build, test, and deploy a React application
-- Design and build UI components using React
-- Deploy a React application using Digital Ocean. 
+The main functionality of the application includes the ability for users to log in with a username and password, as well as create a new account. Once logged in, users can deposit and withdraw funds, and view their transaction history. The transaction history includes the account number and has the option to show or hide it. Each time a user deposits or withdraws funds, a unique transaction number is automatically generated.
 
 ### How to run this app
 - Clone this repository
